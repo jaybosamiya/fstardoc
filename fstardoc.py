@@ -234,7 +234,10 @@ class fst_parsed:
 
     def generate_output(self):
         self.flush()
-        return '\n'.join(self.output)
+        out = '\n'.join(self.output)
+        while '\n\n\n' in out:
+            out = out.replace('\n\n\n', '\n\n')
+        return out.strip()
 
 
 def fst2md(fst):
