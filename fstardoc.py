@@ -35,6 +35,23 @@ def split_array_at_empty(a):
         return a, []
 
 
+# WARNING: We should stop relying on this crutch as soon as possible.
+def fsdoc_code_conv(c):
+    pos_start = None
+    for i, l in enumerate(c):
+        if '{[' in l and ']}' in l:
+            c[i] = l.replace('{[', '```fstar').replace(']}', '```')
+        elif '{[' in l:
+            c[i] = l.replace('{[', '```fstar')
+            pos_start = i + 1
+        elif ']}' in l:
+            c[i] = l.replace(']}', '```')
+            c[pos_start:i] = remove_common_whitespace(c[pos_start:i])
+        elif '[' in l and ']' in l:
+            c[i] = l.replace('[', '`').replace(']', '`')
+    return c
+
+
 class fst_parsed:
 
     def __init__(self):
@@ -90,12 +107,12 @@ class fst_parsed:
             if name is not None:
                 self.output.extend(['#### ' + self._get_code_name(), ''])
             cmt1, cmt2 = split_array_at_empty(self.current_comment)
-            self.output.extend(cmt1)
+            self.output.extend(fsdoc_code_conv(cmt1))
             if len(cmt2) > 0:
                 self.output.append('')
                 self._flush_code()
                 self.output.append('')
-                self.output.extend(cleanup_array(cmt2))
+                self.output.extend(fsdoc_code_conv(cleanup_array(cmt2)))
         elif self.current_comment_type == 'fslit':
             self.output.extend(('> ' + x) for x in self.current_comment)
         elif self.current_comment_type == 'h1':
