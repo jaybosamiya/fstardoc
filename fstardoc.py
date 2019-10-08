@@ -60,6 +60,7 @@ class fst_parsed:
         self.current_code = []
         self.current_comment_type = None
         self.output = []
+        self.symbols = set()
 
     def _state(self):
         state = {
@@ -68,6 +69,7 @@ class fst_parsed:
             'current_code': self.current_code,
             'current_comment_type': self.current_comment_type,
             'output': self.output,
+            'symbols': self.symbols,
         }
         return state
 
@@ -88,11 +90,16 @@ class fst_parsed:
     def _get_code_name(self):
         code = ' '.join(self.current_code)
         if 'val ' in code:
-            return code[code.index('val ') + len('val '):].split(' ')[0]
+            r = code[code.index('val ') + len('val '):].split(' ')[0]
         elif 'let ' in code:
-            return code[code.index('let ') + len('let '):].split(' ')[0]
+            r = code[code.index('let ') + len('let '):].split(' ')[0]
         else:
-            return None
+            r = None
+        if r is not None:
+            if r in self.symbols:
+                self.error("Found same symbol (%s) twice. What gives?!" % r)
+            self.symbols.add(r)
+        return r
 
     def flush(self):
         self.current_comment = cleanup_array(self.current_comment)
@@ -105,7 +112,7 @@ class fst_parsed:
         elif self.current_comment_type == 'fsdoc':
             name = self._get_code_name()
             if name is not None:
-                self.output.extend(['#### ' + self._get_code_name(), ''])
+                self.output.extend(['#### ' + name, ''])
             cmt1, cmt2 = split_array_at_empty(self.current_comment)
             self.output.extend(fsdoc_code_conv(cmt1))
             if len(cmt2) > 0:
@@ -249,8 +256,17 @@ class fst_parsed:
             return
         self.error("Impossible to reach", line)
 
+    def create_hyperlinks(self):
+        for k in self.symbols:
+            for i, l in enumerate(self.output):
+                if l.startswith('#'):
+                    continue
+                self.output[i] = l.replace('`' + k + '`',
+                                           '[`' + k + '`](#' + k + ')')
+
     def generate_output(self):
         self.flush()
+        self.create_hyperlinks()
         out = '\n'.join(self.output)
         while '\n\n\n' in out:
             out = out.replace('\n\n\n', '\n\n')
