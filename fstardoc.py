@@ -77,8 +77,7 @@ class fst_parsed:
                 self.output.append('')
                 self.output.extend(cmt2)
         elif self.current_comment_type == 'fslit':
-            # TODO: FIXME
-            print(self._state())
+            self.output.extend(('> ' + x) for x in self.current_comment)
         elif self.current_comment_type == 'h1':
             self.output.extend(
                 '# ' + x for x in
@@ -95,13 +94,11 @@ class fst_parsed:
             self.output.extend(self.current_comment)
         else:
             self.error("Unknown comment type.")
-        # TODO: FIXME
         self.output.append('\n')
         self.comment_nest_level = 0
         self.current_comment = []
         self._flush_code()
         self.current_comment_type = None
-        pass
 
     def flush_if_not_and_set(self, typ):
         if self.current_comment_type != typ:
