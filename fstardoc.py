@@ -1,3 +1,23 @@
+def remove_common_whitespace(a):
+    v = None
+    for i, l in enumerate(a):
+        if len(l.strip()) == 0:
+            a[i] = ''
+            continue
+        j = 0
+        while j < len(l):
+            if l[j] not in ' \t':
+                break
+            else:
+                j += 1
+        if v is None or j < v:
+            v = j
+    for i, l in enumerate(a):
+        if len(l) != 0:
+            a[i] = a[i][v:]
+    return a
+
+
 def cleanup_array(a):
     i = 0
     j = len(a)
@@ -5,7 +25,7 @@ def cleanup_array(a):
         i += 1
     while j >= 1 and a[j - 1] == '':
         j -= 1
-    return a[i:j]
+    return remove_common_whitespace(a[i:j])
 
 
 def split_array_at_empty(a):
@@ -75,7 +95,7 @@ class fst_parsed:
                 self.output.append('')
                 self._flush_code()
                 self.output.append('')
-                self.output.extend(cmt2)
+                self.output.extend(cleanup_array(cmt2))
         elif self.current_comment_type == 'fslit':
             self.output.extend(('> ' + x) for x in self.current_comment)
         elif self.current_comment_type == 'h1':
