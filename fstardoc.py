@@ -1,4 +1,11 @@
-from pprint import pprint as print
+def cleanup_array(a):
+    i = 0
+    j = len(a)
+    while i < len(a) and a[i] == '':
+        i += 1
+    while j >= 1 and a[j - 1] == '':
+        j -= 1
+    return a[i:j]
 
 
 class fst_parsed:
@@ -28,10 +35,17 @@ class fst_parsed:
         assert False, err
 
     def flush(self):
+        self.current_comment = cleanup_array(self.current_comment)
+        self.current_code = cleanup_array(self.current_code)
         if self.comment_nest_level != 0:
             self.error("Invalid nesting")
         if self.current_comment_type is None:
-            # TODO: FIXME
+            if len(self.current_comment) > 0:
+                self.error("Non empty None comment")
+            if len(self.current_code) > 0:
+                self.output.append('```fstar')
+                self.output.extend(self.current_code)
+                self.output.append('```')
             pass
         elif self.current_comment_type == 'fsdoc':
             # TODO: FIXME
@@ -55,6 +69,7 @@ class fst_parsed:
             self.error("Unknown comment type.")
         # TODO: FIXME
         print(self._state())
+        self.output.append('\n')
         self.comment_nest_level = 0
         self.current_comment = []
         self.current_code = []
@@ -155,11 +170,11 @@ class fst_parsed:
             return
         # not comment
         if self.comment_nest_level == 0:
-            if lstripped.count('(*') == lstripped.count('*)'):
-                self.current_code.append(lstripped)
-            elif lstripped.count('(*') > lstripped.count('*)'):
-                self.current_code.append(lstripped[:lstripped.index('(*')])
-                self.add_line(lstripped[:lstripped.index('(*')])
+            if line.count('(*') == line.count('*)'):
+                self.current_code.append(line)
+            elif line.count('(*') > line.count('*)'):
+                self.current_code.append(line[:line.index('(*')])
+                self.add_line(line[:line.index('(*')])
             else:
                 self.error("More closes than opens", line)
             return
