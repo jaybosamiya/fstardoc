@@ -34,6 +34,13 @@ class fst_parsed:
         err += '\nState: ' + pformat(self._state())
         assert False, err
 
+    def _flush_code(self):
+        if len(self.current_code) > 0:
+            self.output.append('```fstar')
+            self.output.extend(self.current_code)
+            self.output.append('```')
+            self.current_code = []
+
     def flush(self):
         self.current_comment = cleanup_array(self.current_comment)
         self.current_code = cleanup_array(self.current_code)
@@ -42,37 +49,33 @@ class fst_parsed:
         if self.current_comment_type is None:
             if len(self.current_comment) > 0:
                 self.error("Non empty None comment")
-            if len(self.current_code) > 0:
-                self.output.append('```fstar')
-                self.output.extend(self.current_code)
-                self.output.append('```')
-            pass
         elif self.current_comment_type == 'fsdoc':
             # TODO: FIXME
-            pass
+            print(self._state())
         elif self.current_comment_type == 'fslit':
             # TODO: FIXME
-            pass
+            print(self._state())
         elif self.current_comment_type == 'h1':
-            # TODO: FIXME
-            pass
+            self.output.extend(
+                '# ' + x for x in
+                self.current_comment)
         elif self.current_comment_type == 'h2':
-            # TODO: FIXME
-            pass
+            self.output.extend(
+                '## ' + x for x in
+                self.current_comment)
         elif self.current_comment_type == 'h3':
-            # TODO: FIXME
-            pass
+            self.output.extend(
+                '### ' + x for x in
+                self.current_comment)
         elif self.current_comment_type == 'normal':
-            # TODO: FIXME
-            pass
+            self.output.extend(self.current_comment)
         else:
             self.error("Unknown comment type.")
         # TODO: FIXME
-        print(self._state())
         self.output.append('\n')
         self.comment_nest_level = 0
         self.current_comment = []
-        self.current_code = []
+        self._flush_code()
         self.current_comment_type = None
         pass
 
@@ -105,6 +108,10 @@ class fst_parsed:
         if line.startswith('/// '):
             self.flush_if_not_and_set('fslit')
             self.current_comment.append(line[len('/// '):])
+            return
+        if line == '///':
+            self.flush_if_not_and_set('fslit')
+            self.current_comment.append('')
             return
         lstripped = line.strip(' \t')
         if lstripped.startswith('(***** '):
