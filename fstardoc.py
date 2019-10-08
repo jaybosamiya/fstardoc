@@ -197,6 +197,11 @@ class fst_parsed:
                 self.comment_nest_level = (
                     lstripped.count('(*') - lstripped.count('*)'))
             return
+        if lstripped == '(**':
+            # fsdoc comment start, but rest of comment is on further lines
+            self.flush_if_not_and_set('fsdoc')
+            self.comment_nest_level = 1
+            return
         if lstripped.startswith('(*'):
             # normal comment
             self.flush_if_not_and_set('normal')
