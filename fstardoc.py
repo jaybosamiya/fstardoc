@@ -8,6 +8,13 @@ def cleanup_array(a):
     return a[i:j]
 
 
+def split_array_at_empty(a):
+    if '' in a:
+        return a[:a.index('')], a[a.index('') + 1:]
+    else:
+        return a, []
+
+
 class fst_parsed:
 
     def __init__(self):
@@ -41,6 +48,15 @@ class fst_parsed:
             self.output.append('```')
             self.current_code = []
 
+    def _get_code_name(self):
+        code = ' '.join(self.current_code)
+        if 'val ' in code:
+            return code[code.index('val ') + len('val '):].split(' ')[0]
+        elif 'let ' in code:
+            return code[code.index('let ') + len('let '):].split(' ')[0]
+        else:
+            return None
+
     def flush(self):
         self.current_comment = cleanup_array(self.current_comment)
         self.current_code = cleanup_array(self.current_code)
@@ -50,8 +66,16 @@ class fst_parsed:
             if len(self.current_comment) > 0:
                 self.error("Non empty None comment")
         elif self.current_comment_type == 'fsdoc':
-            # TODO: FIXME
-            print(self._state())
+            name = self._get_code_name()
+            if name is not None:
+                self.output.extend(['#### ' + self._get_code_name(), ''])
+            cmt1, cmt2 = split_array_at_empty(self.current_comment)
+            self.output.extend(cmt1)
+            if len(cmt2) > 0:
+                self.output.append('')
+                self._flush_code()
+                self.output.append('')
+                self.output.extend(cmt2)
         elif self.current_comment_type == 'fslit':
             # TODO: FIXME
             print(self._state())
@@ -150,7 +174,6 @@ class fst_parsed:
             if lstripped.count('(*') == lstripped.count('*)'):
                 self.current_comment.append(
                     lstripped[len('(** '):-len('*)')])
-                self.flush()
             else:
                 self.current_comment.append(
                     lstripped[len('(** '):])
