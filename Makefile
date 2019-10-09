@@ -13,8 +13,8 @@ regression-tests: $(ALL_DIFF)
 %.md.geni: %.fsti %.md.expecti fstardoc.py
 	python3 fstardoc.py $< > $@
 
-%-diff: %.md.gen %.md.expect
+%-diff: %.md.expect %.md.gen
 	diff -u --color=always $^
 
-%-diffi: %.md.geni %.md.expecti
+%-diffi: %.md.expecti %.md.geni
 	diff -u --color=always $^
