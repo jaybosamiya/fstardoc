@@ -343,7 +343,7 @@ val ghost_lemma (#a:Type) (#p:(a -> GTot Type0)) (#q:(a -> unit -> GTot Type0))
                 (fun (_:squash (~p)) ->
                      // prove [goal] assuming [~p]
                 )
-       // and now we've proven [goal].
+        // and now we've proven [goal].
     ]}
 *)
 val or_elim (#l #r:Type0) (#goal:(squash (l \/ r) -> Tot Type0))
