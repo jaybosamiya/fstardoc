@@ -18,3 +18,5 @@ regression-tests: $(ALL_DIFF)
 
 %-diffi: %.md.expecti %.md.geni
 	diff -u --color=always $^
+
+.PRECIOUS: $(ALL_GEN)
