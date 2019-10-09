@@ -1,0 +1,20 @@
+ALL_FSTs := $(wildcard tests/*.fst)
+ALL_FSTIs := $(wildcard tests/*.fsti)
+ALL_GEN := $(patsubst %.fst,%.md.gen,$(ALL_FSTs)) $(patsubst %.fsti,%.md.geni,$(ALL_FSTIs))
+ALL_DIFF := $(patsubst %.fst,%-diff,$(ALL_FSTs)) $(patsubst %.fsti,%-diffi,$(ALL_FSTIs))
+
+all: regression-tests
+
+regression-tests: $(ALL_DIFF)
+
+%.md.gen: %.fst %.md.expect fstardoc.py
+	python3 fstardoc.py $< > $@
+
+%.md.geni: %.fsti %.md.expecti fstardoc.py
+	python3 fstardoc.py $< > $@
+
+%-diff: %.md.gen %.md.expect
+	diff -u --color=always $^
+
+%-diffi: %.md.geni %.md.expecti
+	diff -u --color=always $^
