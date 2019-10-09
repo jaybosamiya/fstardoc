@@ -264,9 +264,14 @@ class fst_parsed:
                 self.output[i] = l.replace('`' + k + '`',
                                            '[`' + k + '`](#' + k + ')')
 
+    def whitespace_cleanup(self):
+        for i, l in enumerate(self.output):
+            self.output[i] = l.rstrip()
+
     def generate_output(self):
         self.flush()
         self.create_hyperlinks()
+        self.whitespace_cleanup()
         out = '\n'.join(self.output)
         while '\n\n\n' in out:
             out = out.replace('\n\n\n', '\n\n')
