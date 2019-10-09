@@ -279,6 +279,10 @@ class fst_parsed:
 
 
 def fst2md(fst):
+    import re
+    fst = re.sub(
+        r'\(\*[ \n\t]*Copyright 2008[-,.()":;/A-Za-z0-9 \t\n]*' +
+        r'License.[ \n\t]*\*\)', '', fst)
     fst = fst.split('\n')
     fstp = fst_parsed()
 
