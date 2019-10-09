@@ -152,6 +152,8 @@ class fst_parsed:
     def add_line(self, line):
         if '\n' in line:
             self.error("Newline in line", line)
+        if line.startswith('module ') and ' ' not in line[len('module '):]:
+            self.output.extend(['# ' + line[len('module '):], ''])
         if self.comment_nest_level > 0:
             nest_level = self.comment_nest_level - line.count('*)')
             if nest_level > 0:
