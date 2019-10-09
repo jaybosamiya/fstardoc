@@ -8,15 +8,15 @@ all: regression-tests
 regression-tests: $(ALL_DIFF)
 
 %.md.gen: %.fst %.md.expect fstardoc.py
-	python3 fstardoc.py $< > $@
+	@python3 fstardoc.py $< > $@
 
 %.md.geni: %.fsti %.md.expecti fstardoc.py
-	python3 fstardoc.py $< > $@
+	@python3 fstardoc.py $< > $@
 
 %-diff: %.md.expect %.md.gen
-	diff -u --color=always $^
+	@diff -u --color=always $^ && echo 'Test "$*.fst" passed.'
 
 %-diffi: %.md.expecti %.md.geni
-	diff -u --color=always $^
+	@diff -u --color=always $^ && echo 'Test "$*.fsti" passed.'
 
 .PRECIOUS: $(ALL_GEN)
