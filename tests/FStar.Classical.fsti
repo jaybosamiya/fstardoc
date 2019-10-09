@@ -245,6 +245,7 @@ val forall_to_exists_2 (#a:Type) (#p:(a -> Type)) (#b:Type) (#q:(b -> Type)) (#r
   : Lemma (((exists (x:a). p x) /\ (exists (y:b). q y)) ==> r)
 
 (** Introduce a (scoped) witness of an existential.
+
     Example:
     {[
         // if [exists x. p x] is in context, and we are proving [goal]
