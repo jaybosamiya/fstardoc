@@ -196,7 +196,7 @@ val forall_intro_2_with_pat
             // proof of [q x y z] under assumption of [p x y z]
         in
         let aux x y = move_requires (aux x y) in
-	// notice only 2 arguments (last argument is pointfree)
+        // notice only 2 arguments (last argument is pointfree)
         forall_intro aux // and now we have [forall x. p x y z ==> q x y z]
     ]}
 *)
