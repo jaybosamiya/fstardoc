@@ -268,11 +268,11 @@ val forall_intro_3
 Example: Similar to [`forall_intro_2`](#forall_intro_2), we can use it for non-trivial `requires` clauses:
 ```fstar
 let aux x y z : Lemma (requires (p x y z)) (ensures (q x y z)) =
-    // proof of [q x y z] under assumption of [p x y z]
+    // proof of `q x y z` under assumption of `p x y z`
 in
 let aux x y = move_requires (aux x y) in
 // notice only 2 arguments (last argument is pointfree)
-forall_intro aux // and now we have [forall x. p x y z ==> q x y z]
+forall_intro aux // and now we have `forall x. p x y z ==> q x y z`
 ```
 
 #### forall_intro_3_with_pat
