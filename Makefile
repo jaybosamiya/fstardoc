@@ -14,9 +14,9 @@ regression-tests: $(ALL_DIFF)
 	@python3 fstardoc.py $< > $@
 
 %-diff: %.md.expect %.md.gen
-	@diff -u --color=always $^ && echo 'Test "$*.fst" passed.'
+	@diff -u $^ && echo 'Test "$*.fst" passed.'
 
 %-diffi: %.md.expecti %.md.geni
-	@diff -u --color=always $^ && echo 'Test "$*.fsti" passed.'
+	@diff -u $^ && echo 'Test "$*.fsti" passed.'
 
 .PRECIOUS: $(ALL_GEN)
