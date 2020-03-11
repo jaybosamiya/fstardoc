@@ -1,8 +1,8 @@
 #### c_True
 
 [`c_True`](#c_True) is the singleton inductive type---it is trivially
-    inhabited. Like `c_False`, [`c_True`](#c_True) is seldom used. We instead use
-    its "squashed" variants, `True`
+inhabited. Like `c_False`, [`c_True`](#c_True) is seldom used. We instead use
+its "squashed" variants, `True`
 
 ```fstar
 type c_True = | T
@@ -24,8 +24,8 @@ val get_equality
 #### l_True
 
 [`l_True`](#l_True) has a special bit of syntactic sugar. It is written just
-    as "True" and rendered in the ide as `True`. It is a squashed version
-    of constructive truth, [`c_True`](#c_True).
+as "True" and rendered in the ide as `True`. It is a squashed version
+of constructive truth, [`c_True`](#c_True).
 
 ```fstar
 [@"tac_opaque" smt_theory_symbol]

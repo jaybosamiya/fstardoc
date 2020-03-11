@@ -116,7 +116,7 @@ class fst_parsed:
             if name is not None:
                 self.output.extend(['#### ' + name, ''])
             cmt1, cmt2 = split_array_at_empty(self.current_comment)
-            self.output.extend(fsdoc_code_conv(cmt1))
+            self.output.extend(fsdoc_code_conv([cmt1[0]] + cleanup_array(cmt1[1:])))
             if len(cmt2) > 0:
                 self.output.append('')
                 self._flush_code()
