@@ -262,8 +262,18 @@ class fst_parsed:
         self.error("Impossible to reach", line)
 
     def create_hyperlinks(self):
+        in_code = False
         for k in self.symbols:
             for i, l in enumerate(self.output):
+                if '```' in l:
+                    if l == '```fstar':
+                        in_code = True
+                    elif l == '```':
+                        in_code = False
+                    else:
+                        pass
+                if in_code:
+                    continue
                 if l.startswith('#'):
                     continue
                 self.output[i] = l.replace('`' + k + '`',

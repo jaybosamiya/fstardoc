@@ -388,7 +388,7 @@ let subtype_of (p1:Type) (p2:Type) = forall (x:p1). has_type x p2
 The type of squashed types
 
 ```fstar
-type prop = a:Type0{ a [`subtype_of`](#subtype_of) unit }
+type prop = a:Type0{ a `subtype_of` unit }
 ```
 
 #### range
@@ -1171,7 +1171,7 @@ val op_Division           : int -> nonzero -> Tot int
 let rec pow2 (x:nat) : Tot pos =
   match x with
   | 0  -> 1
-  | _  -> 2 [`op_Multiply`](#op_Multiply) (pow2 (x-1))
+  | _  -> 2 `op_Multiply` (pow2 (x-1))
 ```
 
 TODO: maybe move this to FStar.Int
