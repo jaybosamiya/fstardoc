@@ -16,3 +16,16 @@ val get_equality
     of constructive truth, [c_True]. *)
 [@"tac_opaque" smt_theory_symbol]
 let l_True :logical = squash c_True
+
+(** Introduces the PURE effect. *)
+total
+new_effect {
+  PURE : a:Type -> wp:pure_wp a -> Effect
+  with return_wp    = pure_return
+     ; bind_wp      = pure_bind_wp
+     ; if_then_else = pure_if_then_else
+     ; ite_wp       = pure_ite_wp
+     ; stronger     = pure_stronger
+     ; close_wp     = pure_close_wp
+     ; trivial      = pure_trivial
+}
