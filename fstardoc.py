@@ -94,10 +94,8 @@ class fst_parsed:
         for s in splitters:
             s = s + ' '
             if s in code:
-                if 'effect' not in s:
-                    r = code[code.index(s) + len(s):].split(' ')[0]
-                else:
-                    r = [x for x in code[code.index(s) + len(s):].split(' ') if x][1]
+                r = [x for x in code[code.index(s) + len(s):].split(' ')
+                     if x not in ('','{')][0]
                 break
         if r is not None:
             if r in self.symbols:
