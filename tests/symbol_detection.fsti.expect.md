@@ -58,3 +58,12 @@ The type-checker emits axioms for [`hasEq`](#hasEq) for each inductive type
 ```fstar
 assume type hasEq: Type -> GTot Type0
 ```
+
+#### Lemma
+
+[`Lemma`](#Lemma) is a very widely used effect abbreviation.
+
+```fstar
+effect Lemma (a:Type) (pre:Type) (post:squash pre -> Type) (pats:list pattern) =
+       Pure a pre (fun r -> post ())
+```

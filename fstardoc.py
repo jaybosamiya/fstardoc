@@ -89,11 +89,11 @@ class fst_parsed:
 
     def _get_code_name(self):
         code = ' '.join(self.current_code)
-        splitters = ('val', 'let', 'type', 'new_effect', 'layered_effect')
+        splitters = ('val', 'let', 'type', 'effect', 'new_effect', 'layered_effect')
         r = None
         for s in splitters:
-            s = s + ' '
-            if s in code:
+            if s in code.split():
+                s = s + ' '
                 r = [x for x in code[code.index(s) + len(s):].split(' ')
                      if x not in ('','{')][0]
                 r = r.rstrip(':')

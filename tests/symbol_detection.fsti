@@ -33,3 +33,8 @@ new_effect {
 (** A predicate to express when a type supports decidable equality
     The type-checker emits axioms for [hasEq] for each inductive type *)
 assume type hasEq: Type -> GTot Type0
+
+(** [Lemma] is a very widely used effect abbreviation.
+*)
+effect Lemma (a:Type) (pre:Type) (post:squash pre -> Type) (pats:list pattern) =
+       Pure a pre (fun r -> post ())
