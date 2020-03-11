@@ -89,14 +89,16 @@ class fst_parsed:
 
     def _get_code_name(self):
         code = ' '.join(self.current_code)
-        if 'val ' in code:
-            r = code[code.index('val ') + len('val '):].split(' ')[0]
-        elif 'let ' in code:
-            r = code[code.index('let ') + len('let '):].split(' ')[0]
-        elif 'type ' in code:
-            r = code[code.index('type ') + len('type '):].split(' ')[0]
-        else:
-            r = None
+        splitters = ('val', 'let', 'type', 'new_effect', 'layered_effect')
+        r = None
+        for s in splitters:
+            s = s + ' '
+            if s in code:
+                if 'effect' not in s:
+                    r = code[code.index(s) + len(s):].split(' ')[0]
+                else:
+                    r = [x for x in code[code.index(s) + len(s):].split(' ') if x][1]
+                break
         if r is not None:
             if r in self.symbols:
                 self.error("Found same symbol (%s) twice. What gives?!" % r)
