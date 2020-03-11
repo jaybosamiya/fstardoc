@@ -9,7 +9,6 @@ all: regression-tests
 regression-tests: $(ALL_DIFF)
 
 %.expect.md: %
-	@echo "$@ does not exist. Making an empty one."
 	@touch $@
 
 %.gen.md: % %.expect.md fstardoc.py
