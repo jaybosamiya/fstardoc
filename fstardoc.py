@@ -96,6 +96,7 @@ class fst_parsed:
             if s in code:
                 r = [x for x in code[code.index(s) + len(s):].split(' ')
                      if x not in ('','{')][0]
+                r = r.rstrip(':')
                 break
         if r is not None:
             if r in self.symbols:
