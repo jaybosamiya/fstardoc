@@ -93,6 +93,8 @@ class fst_parsed:
             r = code[code.index('val ') + len('val '):].split(' ')[0]
         elif 'let ' in code:
             r = code[code.index('let ') + len('let '):].split(' ')[0]
+        elif 'type ' in code:
+            r = code[code.index('type ') + len('type '):].split(' ')[0]
         else:
             r = None
         if r is not None:
