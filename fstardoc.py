@@ -270,7 +270,7 @@ class fst_parsed:
 
     def whitespace_cleanup(self):
         for i, l in enumerate(self.output):
-            self.output[i] = l.rstrip()
+            self.output[i] = l.rstrip().replace('\t', ' ' * 4)
 
     def generate_output(self):
         self.flush()
