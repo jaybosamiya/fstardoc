@@ -127,15 +127,15 @@ class fst_parsed:
         elif self.current_comment_type == 'h1':
             self.output.extend(
                 '# ' + x for x in
-                self.current_comment)
+                fsdoc_code_conv(self.current_comment))
         elif self.current_comment_type == 'h2':
             self.output.extend(
                 '## ' + x for x in
-                self.current_comment)
+                fsdoc_code_conv(self.current_comment))
         elif self.current_comment_type == 'h3':
             self.output.extend(
                 '### ' + x for x in
-                self.current_comment)
+                fsdoc_code_conv(self.current_comment))
         elif self.current_comment_type == 'normal':
             self.output.extend(self.current_comment)
         else:
