@@ -29,3 +29,7 @@ new_effect {
      ; close_wp     = pure_close_wp
      ; trivial      = pure_trivial
 }
+
+(** A predicate to express when a type supports decidable equality
+    The type-checker emits axioms for [hasEq] for each inductive type *)
+assume type hasEq: Type -> GTot Type0

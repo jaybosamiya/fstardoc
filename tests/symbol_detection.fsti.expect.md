@@ -49,3 +49,12 @@ new_effect {
      ; trivial      = pure_trivial
 }
 ```
+
+#### hasEq
+
+A predicate to express when a type supports decidable equality
+The type-checker emits axioms for [`hasEq`](#hasEq) for each inductive type
+
+```fstar
+assume type hasEq: Type -> GTot Type0
+```
