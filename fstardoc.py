@@ -124,7 +124,8 @@ class fst_parsed:
                 self.output.append('')
                 self.output.extend(fsdoc_code_conv(cleanup_array(cmt2)))
         elif self.current_comment_type == 'fslit':
-            self.output.extend(('> ' + x) for x in self.current_comment)
+            self.output.extend(('> ' + x)
+                               for x in fsdoc_code_conv(self.current_comment))
         elif self.current_comment_type == 'h1':
             self.output.extend(
                 '# ' + x for x in
@@ -138,7 +139,7 @@ class fst_parsed:
                 '### ' + x for x in
                 fsdoc_code_conv(self.current_comment))
         elif self.current_comment_type == 'normal':
-            self.output.extend(self.current_comment)
+            self.output.extend(fsdoc_code_conv(self.current_comment))
         else:
             self.error("Unknown comment type.")
         self.output.append('\n')
